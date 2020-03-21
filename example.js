@@ -1,4 +1,4 @@
-// const Zattoo = require("zattoo");
+// const Zattoo = require("zattoo-unofficial-api");
 const Zattoo = require("./index.js");
 
 const main = async () => {
