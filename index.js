@@ -7,13 +7,13 @@ const queue = require("queue");
 
 function Zattoo(config) {
 
-  const lang = config.lang || "en";
-  const domain = config.domain || "zattoo.com";
-
   /* assert*/
   assert(typeof config !== "undefined", "config must be an none-empty object");
   assert(typeof config.user === "string" && config.user.length > 0, "config.user must be an none-empty string");
   assert(typeof config.password === "string" && config.password.length > 0, "config.password must be an none-empty string");
+  
+  const lang = config.lang || "en";
+  const domain = config.domain || "zattoo.com";
   assert(typeof lang === "string" && lang.length > 0, "config.lang not valid");
   assert(typeof domain === "string" && domain.length > 0, "config.domain not valid");
 
