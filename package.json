@@ -1,0 +1,23 @@
+{
+  "name": "zattoo",
+  "version": "1.0.0",
+  "description": "Unofficial Zattoo Streaming API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heleon19/zattoo-unofficial-api.git"
+  },
+  "homepage": "https://github.com/heleon19/zattoo-unofficial-api#readme",
+  "author": "Reto Jenni (heleon19)",
+  "license": "Apache License 2.0",
+  "dependencies": {
+    "axios": "0.19.2",
+    "axios-cookiejar-support": "0.5.1",
+    "queue": "6.0.1",
+    "tough-cookie": "3.0.1",
+    "uuid": "7.0.2"
+  }
+}
