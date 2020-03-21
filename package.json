@@ -1,5 +1,5 @@
 {
-  "name": "zattoo",
+  "name": "zattoo-unofficial-api",
   "version": "1.0.0",
   "description": "Unofficial Zattoo Streaming API",
   "main": "index.js",
