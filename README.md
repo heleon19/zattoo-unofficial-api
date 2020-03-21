@@ -12,6 +12,8 @@ npm install zattoo-unofficial-api
 Create a Zattoo instance with the following configuration parameters:
 
 ```js
+const Zattoo = require("zattoo-unofficial-api");
+
 const zattoo = new Zattoo({
   "user": "your@mail.com",
   "password": "xyz",
