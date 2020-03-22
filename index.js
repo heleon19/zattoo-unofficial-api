@@ -126,14 +126,15 @@ function Zattoo(config) {
   /* execute cmd, use queue to serialize the requests */
   const execute = (cmd, cb) => {
     return promiseOrCallback(new Promise((res, rej) => {
-      try {
-        _queue.push(async (qcb) => {
+      _queue.push(async (qcb) => {
+        try {
           res(await cmd());
+        } catch (err) {
+          rej(err);
+        } finally {
           qcb();
-        });
-      } catch (err) {
-        rej(err);
-      }
+        }
+      });
     }), cb);
   };
 
