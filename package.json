@@ -1,6 +1,6 @@
 {
   "name": "zattoo-unofficial-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Unofficial Zattoo Streaming API",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,6 @@
     "queue": "6.0.1",
     "tough-cookie": "3.0.1",
     "uuid": "7.0.2"
-  }
+  },
+  "keywords": ["zattoo"]
 }
