@@ -11,7 +11,7 @@ function Zattoo(config) {
   assert(typeof config !== "undefined", "config must be an none-empty object");
   assert(typeof config.user === "string" && config.user.length > 0, "config.user must be an none-empty string");
   assert(typeof config.password === "string" && config.password.length > 0, "config.password must be an none-empty string");
-  
+
   const lang = config.lang || "en";
   const domain = config.domain || "zattoo.com";
   assert(typeof lang === "string" && lang.length > 0, "config.lang not valid");
@@ -76,6 +76,12 @@ function Zattoo(config) {
     return this.channels;
   }
 
+  /* request guide information */
+  const requestGuideInfo = async (start, end) => {
+    const hash = this.session.power_guide_hash;
+    return (await this.http.get(`zapi/v3/cached/${hash}/guide?start=${start}&end=${end}`)).data;
+  }
+
   /* find cid by display alias */
   const findCidByAlias = (alias) => {
     let channel;
@@ -100,12 +106,26 @@ function Zattoo(config) {
 
   /* request watch ursl */
   const requestWatchUrls = async (alias, streamType) => {
-    await requestChannelList();
-    const cid = findCidByAlias(alias);
+    let url = "zapi/watch";
+
     const params = new URLSearchParams();
-    params.append("cid", cid);
     params.append("stream_type", streamType || "hls");
-    return (await this.http.post("zapi/watch", params)).data.stream.watch_urls;
+
+    if (typeof alias === "string") {
+      await requestChannelList();
+      const cid = findCidByAlias(alias);
+      params.append("cid", cid);
+
+    } else if (typeof alias === "object" && alias.cid && alias.id) {
+      params.append("pre_padding", alias.pre_padding || 0);
+      params.append("post_padding", alias.post_padding || 0);
+      url += `/recall/${alias.cid}/${alias.id}`
+
+    } else {
+      throw new Error("parameters not supported");
+    }
+
+    return (await this.http.post(url, params)).data.stream.watch_urls;
   }
 
   /* if no cb is passed, return promise */
@@ -153,6 +173,12 @@ function Zattoo(config) {
   this.getChannelList = (cb) => execute(async () => {
     await login();
     return await requestChannelList();
+  }, cb);
+
+  /* guide informationt */
+  this.getGuideInfo = (start, end, cb) => execute(async () => {
+    await login();
+    return await requestGuideInfo(start, end);
   }, cb);
 
   /* get stream urls by display alias */
