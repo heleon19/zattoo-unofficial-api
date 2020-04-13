@@ -43,7 +43,7 @@ function Zattoo(config) {
 
   /* request the app token */
   const requestAppToken = async () => {
-    const res = await this.http.get();
+    const res = await this.http.get("int");
     this.client_app_token = res.data.match(/window\.appToken\s+=\s+'([^']+)'/)[1];
   };
 
