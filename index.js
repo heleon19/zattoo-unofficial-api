@@ -43,8 +43,8 @@ function Zattoo(config) {
 
   /* request the app token */
   const requestAppToken = async () => {
-    const res = await this.http.get("int");
-    this.client_app_token = res.data.match(/window\.appToken\s+=\s+'([^']+)'/)[1];
+    const res = await this.http.get("client/token-2fb69f883fea03d06c68c6e5f21ddaea.json");
+    this.app_tid = res.data["app_tid"];
   };
 
   /* request a new session */
@@ -56,7 +56,7 @@ function Zattoo(config) {
     params.append("uuid", uid);
     params.append("lang", lang);
     params.append("app_version", "3.2008.0");
-    params.append("client_app_token", this.client_app_token);
+    params.append("app_tid", this.app_tid);
     this.session = (await this.http.post("zapi/v2/session/hello", params)).data.session;
   };
 
