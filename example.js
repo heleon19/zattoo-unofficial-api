@@ -6,8 +6,7 @@ const main = async () => {
   const zattoo = new Zattoo({
     "user": "your@mail.com",
     "password": "xyz",
-    "lang": "de", // optional
-    "domain": "zattoo.com" // optional
+    "lang": "de" // optional
   });
 
   /* get stream url for srf1, then and catch used */

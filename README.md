@@ -17,8 +17,7 @@ const Zattoo = require("zattoo-unofficial-api");
 const zattoo = new Zattoo({
   "user": "your@mail.com",
   "password": "xyz",
-  "lang": "de", // optional
-  "domain": "zattoo.com" // optional
+  "lang": "de" // optional
 });
 
 ```
