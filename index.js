@@ -109,7 +109,7 @@ function Zattoo(config) {
     let url = "zapi/watch";
 
     const params = new URLSearchParams();
-    params.append("stream_type", streamType || "dash");
+    params.append("stream_type", streamType || "hls5");
 
     if (typeof alias === "string") {
       await requestChannelList();
@@ -183,7 +183,7 @@ function Zattoo(config) {
 
   /* get stream urls by display alias */
   this.getStreamUrls = (alias, streamType, cb) => {
-    const _streamType = typeof streamType === "string" ? streamType : "dash";
+    const _streamType = typeof streamType === "string" ? streamType : "hls5";
     const _cb = cb || (typeof streamType === "function" ? streamType : undefined);
 
     return execute(async () => {
