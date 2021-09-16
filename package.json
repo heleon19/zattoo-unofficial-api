@@ -1,6 +1,6 @@
 {
   "name": "zattoo-unofficial-api",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Unofficial Zattoo Streaming API",
   "main": "index.js",
   "scripts": {
