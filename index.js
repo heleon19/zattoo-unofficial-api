@@ -43,8 +43,8 @@ function Zattoo(config) {
 
   /* request the app token */
   const requestAppToken = async () => {
-    const res = await this.http.get("client/token-2fb69f883fea03d06c68c6e5f21ddaea.json");
-    this.app_tid = res.data["app_tid"];
+    const res = await this.http.get("token.json");
+    this.app_token = res.data.session_token;
   };
 
   /* request a new session */
@@ -55,9 +55,13 @@ function Zattoo(config) {
     const params = new URLSearchParams();
     params.append("uuid", uid);
     params.append("lang", lang);
-    params.append("app_version", "3.2008.0");
-    params.append("app_tid", this.app_tid);
-    this.session = (await this.http.post("zapi/v2/session/hello", params)).data.session;
+    params.append("format", "json");
+    params.append("app_version", "3.2120.1");
+    params.append("client_app_token", this.app_token);
+    this.session = (await this.http.post("zapi/v3/session/hello", params)).data;
+    if (!(this.session.active || this.session.success)) {
+      throw new Error("hello failed");
+    }
   };
 
   /* request login and update session */
@@ -66,7 +70,13 @@ function Zattoo(config) {
     params.append("login", config.user);
     params.append("password", config.password);
     params.append("remember", "true");
-    this.session = (await this.http.post("zapi/v2/account/login", params)).data.session;
+    params.append("format", "json");
+    const res = await this.http.post("zapi/v3/account/login", params, {
+      "validateStatus": (status) => [200, 400].includes(status)
+    });
+    if (!res.data.active) {
+      throw new Error("login failed");
+    }
   };
 
   /* request channel list */
@@ -109,7 +119,8 @@ function Zattoo(config) {
     let url = "zapi/watch";
 
     const params = new URLSearchParams();
-    params.append("stream_type", streamType || "hls5");
+    params.append("https_watch_urls", true);
+    params.append("stream_type", streamType);
 
     if (typeof alias === "string") {
       await requestChannelList();
@@ -125,7 +136,11 @@ function Zattoo(config) {
       throw new Error("parameters not supported");
     }
 
-    return (await this.http.post(url, params)).data.stream.watch_urls;
+    console.log(params);
+    const res = await this.http.post(url, params, {
+      "validateStatus": (status) => [200, 402, 403, 404].includes(status)
+    });
+    return res.data.stream.watch_urls;
   }
 
   /* if no cb is passed, return promise */
@@ -183,7 +198,7 @@ function Zattoo(config) {
 
   /* get stream urls by display alias */
   this.getStreamUrls = (alias, streamType, cb) => {
-    const _streamType = typeof streamType === "string" ? streamType : "hls5";
+    const _streamType = typeof streamType === "string" ? streamType : "hls7";
     const _cb = cb || (typeof streamType === "function" ? streamType : undefined);
 
     return execute(async () => {
