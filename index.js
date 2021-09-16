@@ -136,7 +136,6 @@ function Zattoo(config) {
       throw new Error("parameters not supported");
     }
 
-    console.log(params);
     const res = await this.http.post(url, params, {
       "validateStatus": (status) => [200, 402, 403, 404].includes(status)
     });
